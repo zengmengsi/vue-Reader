@@ -24,9 +24,9 @@
 					<v-touch tag="li" v-for="(history, index) in searchHistory" :key="index" @tap="fuzzySearch">{{history}}</v-touch>
 				</ul>
 			</div>
-	
+
 		</div>
-	
+
 		<!--显示自动补全（优先级最高）-->
 		<ul class="auto-complete-list" v-if="autoCompleteList.length && searchWord">
 			<v-touch tag="li" v-for="(item, index) in autoCompleteList" :key="index" @tap="fuzzySearch">
@@ -72,13 +72,13 @@ export default {
   },
   created () {
     this.searchHistory = util.getLocalStroageData('searchHistory') ? util.getLocalStroageData('searchHistory') : []
-    api.getHotWords().then(response => {
-      this.searchHotWords = response.data.searchHotWords
-      // 只取前15个热词
-      this.searchHotWords.length = 15
-    }).catch(err => {
-      console.log(err)
-    })
+//    api.getHotWords().then(response => {
+//      this.searchHotWords = response.data.searchHotWords
+//      // 只取前15个热词
+//      this.searchHotWords.length = 15
+//    }).catch(err => {
+//      console.log(err)
+//    })
   },
   watch: {
     'searchWord': function () {

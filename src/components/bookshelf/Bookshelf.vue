@@ -1,24 +1,31 @@
 <template>
 	<div>
 
-        <div class="no-content">
+        <div class="no-content" v-if="!books.length">
             <i class="iconfont">&#xe6a6;</i>
             <mt-button type="primary" class="add-book" v-if="!books.length" @click="$emit('addBook','分类')">添加小说</mt-button>
         </div>
-        <ul class="book-shelf" v-if="books.length">
-			<v-touch tag="li" class="book-list-wrap" v-for="(book, index) in books" :key="index" @swipeleft="showDelBookBtn" @swiperight="hideDelBookBtn">
-				<v-touch class="book-list" @tap="readbook(book)">
-					<div class="read-book-history">
-						<img :src="book.cover">
-						<div class="info">
-							<p class="title">{{book.title}}</p>
-							<p class="updated">{{book.updated | ago}}：{{book.lastChapter}}</p>
-						</div>
-					</div>
-					<v-touch class="del-book-btn" @tap="delBook($event,index)">删除</v-touch>
-				</v-touch>
-			</v-touch>
-		</ul>
+        <ul class="category" v-if="books.length">
+            <li v-for="item in books">
+                <img :src="item.cover" @click="getBook(item.source)">
+                <p>{{item.title}}</p>
+                <div>{{item.author}}</div>
+            </li>
+        </ul>
+        <!--<ul class="book-shelf" v-if="books.length">-->
+			<!--<v-touch tag="li" class="book-list-wrap" v-for="(book, index) in books" :key="index" @swipeleft="showDelBookBtn" @swiperight="hideDelBookBtn">-->
+				<!--<v-touch class="book-list" @tap="readbook(book)">-->
+					<!--<div class="read-book-history">-->
+						<!--<img :src="book.cover">-->
+						<!--<div class="info">-->
+							<!--<p class="title">{{book.title}}</p>-->
+							<!--<p class="updated">{{book.updated | ago}}：{{book.lastChapter}}</p>-->
+						<!--</div>-->
+					<!--</div>-->
+					<!--<v-touch class="del-book-btn" @tap="delBook($event,index)">删除</v-touch>-->
+				<!--</v-touch>-->
+			<!--</v-touch>-->
+		<!--</ul>-->
 	</div>
 </template>
 
@@ -46,7 +53,20 @@ export default {
     }
   },
   created () {
-    this.getBookUpdate()
+//    this.getBookUpdate()
+      let localShelf,
+              that = this
+//      Indicator.open()
+      localShelf = util.getLocalStroageData('followBookList')
+      this.getBookList().forEach((book) => {
+//          Object.assign(book, localShelf[book._id])
+//          book.cover = util.staticPath + book.cover
+//          console.log(localShelf[book])
+          that.books.push(localShelf[book])
+      })
+//      Indicator.close()
+
+
   },
   methods: {
     /**
@@ -61,23 +81,23 @@ export default {
       return bookListArray
     },
 
-    getBookUpdate () {
-      let localShelf,
-        that = this
-      Indicator.open()
-      api.getUpdate(this.getBookList()).then(response => {
-        localShelf = util.getLocalStroageData('followBookList')
-        response.data.forEach((book) => {
-          Object.assign(book, localShelf[book._id])
-          book.cover = util.staticPath + book.cover
-          that.books.push(book)
-        })
-        Indicator.close()
-      }).catch(err => {
-        console.log(err)
-        Indicator.close()
-      })
-    },
+//    getBookUpdate () {
+//      let localShelf,
+//        that = this
+//      Indicator.open()
+//      api.getUpdate(this.getBookList()).then(response => {
+//        localShelf = util.getLocalStroageData('followBookList')
+//        response.data.forEach((book) => {
+//          Object.assign(book, localShelf[book._id])
+//          book.cover = util.staticPath + book.cover
+//          that.books.push(book)
+//        })
+//        Indicator.close()
+//      }).catch(err => {
+//        console.log(err)
+//        Indicator.close()
+//      })
+//    },
 
     readbook (book) {
       this.$store.commit(SET_READ_BOOK, book)
@@ -200,4 +220,14 @@ export default {
     .no-content .mint-button--primary {
         background-color: #ffc107 !important;
     }
+    .category{
+        margin-top: 20px;
+    }
+.category li{
+    width: 28%;
+    margin-left: 4%;
+}
+.category li img{
+    height: 140px;
+}
 </style>

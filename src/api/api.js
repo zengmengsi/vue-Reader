@@ -22,6 +22,22 @@ export default {
     return instance.get('/pageInfo?link=' + bookId)
   },
 
+  /**
+    * 获取小说章节
+    * @param {String} sourceId 小说源id
+    */
+    getChapters (sourceId) {
+      return instance.get('/chapter?link=' + sourceId+'&page=1')
+    // return Vue.http.get('/atoc/' + sourceId + '?view=chapters')
+    },
+  /**
+     * 获取小说章节内容
+     * @param {String} chapterUrl 章节url
+     * http://chapterup.zhuishushenqi.com/chapter/http://vip.zhuishushenqi.com/chapter/5817f1161bb2ca566b0a5973?cv=1481275033588
+     */
+    getBookChapterContent (link) {
+      return instance.get('/content?link=' + link)
+    },
   // ------------------------
   /**
      * 获取所有的排行榜类型
@@ -105,22 +121,22 @@ export default {
     return Vue.http.get('/mix-atoc/' + bookId + '?view=chapters')
   },
 
-  /**
-     * 获取小说章节
-     * @param {String} sourceId 小说源id
-     */
-  getChapters (sourceId) {
-    return Vue.http.get('/atoc/' + sourceId + '?view=chapters')
-  },
+  // /**
+  //    * 获取小说章节
+  //    * @param {String} sourceId 小说源id
+  //    */
+  // getChapters (sourceId) {
+  //   return Vue.http.get('/atoc/' + sourceId + '?view=chapters')
+  // },
 
-  /**
-     * 获取小说章节内容
-     * @param {String} chapterUrl 章节url
-     * http://chapterup.zhuishushenqi.com/chapter/http://vip.zhuishushenqi.com/chapter/5817f1161bb2ca566b0a5973?cv=1481275033588
-     */
-  getBookChapterContent (chapterUrl) {
-    return Vue.http.get('/getChapter?chapterUrl=' + chapterUrl)
-  },
+  // /**
+  //    * 获取小说章节内容
+  //    * @param {String} chapterUrl 章节url
+  //    * http://chapterup.zhuishushenqi.com/chapter/http://vip.zhuishushenqi.com/chapter/5817f1161bb2ca566b0a5973?cv=1481275033588
+  //    */
+  // getBookChapterContent (chapterUrl) {
+  //   return Vue.http.get('/getChapter?chapterUrl=' + chapterUrl)
+  // },
 
   /**
      * 获取搜索热词

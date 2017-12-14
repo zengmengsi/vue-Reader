@@ -1,7 +1,7 @@
 <template>
 	<div id="container" class="container">
 		<mt-header fixed :title="$store.state.bookInfo.title" v-if="operation" class="head">
-			<router-link :to="/book/+$store.state.bookInfo._id" slot="left">
+			<router-link :to="/book/+$store.state.bookInfo.link" slot="left">
 				<mt-button icon="back">返回</mt-button>
 			</router-link>
 		</mt-header>
@@ -50,21 +50,21 @@
 	            </div>
 	            <div class="setting-item">
 	                <ul class="bg-color">
-	                    <li></li>     
+	                    <li></li>
 	                </ul>
 	            </div>
 	        </div>-->
 		<!--目录-->
 		<div class="chapter-list" v-show="isShowChapter" v-scroll="onScroll">
 			<div class="chapter-contents">
-				<p>{{$store.state.bookInfo.title}}：目录</p>
+				<p>{{$store.state.bookInfo.name}}：目录</p>
 				<v-touch tag="span" class="chapter-sort" @tap="descSort">
 					<img src="../../assets/down.svg" v-if="!chapterDescSort">
 					<img src="../../assets/up.svg" v-else>
 				</v-touch>
 			</div>
 			<ul id="chapter-list" v-if="loadedChapters">
-				<v-touch tag="li" v-for="(chapter, index) in loadedChapters" :key="index" @tap="jumpChapter(index)">{{chapter.title}}</v-touch>
+				<v-touch tag="li" v-for="(item, index) in loadedChapters" :key="index" @tap="jumpChapter(index)">{{JSON.parse(item).name}}</v-touch>
 			</ul>
 		</div>
 	</div>
@@ -93,8 +93,9 @@ export default {
   },
   computed: {
     bookChaptersBody () {
-      let content = this.bookChaptersContent && this.bookChaptersContent.cpContent ? 'cpContent' : 'body'
-      return this.bookChaptersContent && this.bookChaptersContent[content].replace(/\n/g, '<br/>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp')
+//      let content = this.bookChaptersContent && this.bookChaptersContent.cpContent ? 'cpContent' : 'body'
+//        return this.bookChaptersContent
+      return this.bookChaptersContent && this.bookChaptersContent.replace(/\n/g, '<br/>&nbsp&nbsp')
     }
   },
   beforeCreate () {
@@ -103,12 +104,12 @@ export default {
   created () {
     let readRecord = util.getLocalStroageData('followBookList')
     api.getChapters(this.$store.state.source).then(response => {
-      this.bookChapter = response.data
+      this.bookChapter.chapters = response.data
       this.currentChapter = readRecord && readRecord[this.$route.params.bookId] && readRecord[this.$route.params.bookId].chapter ? readRecord[this.$route.params.bookId].chapter : 0
       // 默认取前50章节
       this.loadedChapters = this.bookChapter.chapters.slice(0, 50)
       Indicator.close()
-      this.getBookChapterContent()
+//      this.getBookChapterContent()
     }).catch(err => {
       console.log(err)
       MessageBox.alert('加载失败，请重试').then(() => {
@@ -139,18 +140,19 @@ export default {
       let lastChapter = this.currentChapter >= this.bookChapter.chapters.length - 1 ? this.bookChapter.chapters.length - 1 : this.currentChapter
       Indicator.open('加载中')
       // 无论正序还是倒叙 当前章节字段都是 按正序的序号
-      api.getBookChapterContent(this.bookChapter.chapters[lastChapter].link).then(response => {
+      let conid=JSON.parse(this.bookChapter.chapters[lastChapter]).link;
+      api.getBookChapterContent(conid).then(response => {
         /**
                  *  判断是否是正版源，如果是正版，给出换源提示
                  */
-        if (response.data.chapter.cpContent && response.data.chapter.isVip) {
-          MessageBox.alert('章节为正版源，请换源后重试').then(() => {
-            this.$router.push('/changeSource/' + this.$route.params.bookId)
-          })
-        } else {
-          this.bookChaptersContent = response.data.chapter
+//        if (response.data.chapter.cpContent && response.data.chapter.isVip) {
+//          MessageBox.alert('章节为正版源，请换源后重试').then(() => {
+//            this.$router.push('/changeSource/' + this.$route.params.bookId)
+//          })
+//        } else {
+          this.bookChaptersContent = response.data.msg
           document.getElementById('container').scrollTop = 0
-        }
+//        }
         Indicator.close()
       }).catch(err => {
         Indicator.close()
@@ -257,21 +259,21 @@ export default {
   /**
      * 对未加入书架的小说，提示是否加入书架
      */
-  beforeRouteLeave (to, from, next) {
-    let readRecord = util.getLocalStroageData('followBookList') || {}
-    if (!readRecord[this.$route.params.bookId]) {
-      MessageBox.confirm('是否将小说加入书架？').then(() => {
-        this.recordReadHis()
-        Toast('添加成功！')
-        next()
-      }, () => {
-        next()
-      })
-    } else {
-      this.recordReadHis()
-      next()
-    }
-  }
+//  beforeRouteLeave (to, from, next) {
+//    let readRecord = util.getLocalStroageData('followBookList') || {}
+//    if (!readRecord[this.$route.params.bookId]) {
+//      MessageBox.confirm('是否将小说加入书架？').then(() => {
+//        this.recordReadHis()
+//        Toast('添加成功！')
+//        next()
+//      }, () => {
+//        next()
+//      })
+//    } else {
+//      this.recordReadHis()
+//      next()
+//    }
+//  }
 }
 </script>
 
@@ -290,8 +292,8 @@ export default {
 }
 
 article {
-	font-size: 0.9rem;
-	line-height: 1.7rem;
+	font-size: 0.8rem;
+	line-height: 1.5rem;
 	padding: 0 1rem;
 }
 
@@ -301,7 +303,7 @@ h3 {
 }
 
 .head {
-	background: #000;
+	background: #000 !important;
 	color: #f3e7e7;
 }
 

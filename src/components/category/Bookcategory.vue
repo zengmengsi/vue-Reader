@@ -131,6 +131,9 @@ export default {
 section{
     margin-top: 2rem;
 }
+
+</style>
+<style>
 .category li{
     display: inline-block;
     width:21.25%;

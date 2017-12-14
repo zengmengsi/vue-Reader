@@ -61,11 +61,11 @@ export default {
     }
   },
   created () {
-    api.getRankType().then(response => {
-      this.ranklist = response.data
-    }).catch(err => {
-      console.log(err)
-    })
+//    api.getRankType().then(response => {
+//      this.ranklist = response.data
+//    }).catch(err => {
+//      console.log(err)
+//    })
   },
   methods: {
     showMoreMaleRank () {
