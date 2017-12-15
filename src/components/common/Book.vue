@@ -11,7 +11,7 @@
         <section>
             <div class="book-info">
                 <img v-if="book" :src="imgUrl"
-                     onerror="javascript:this.src='https://github.com/zimplexing/vue-nReader/blob/master/screenshot/errBook.png?raw=true'">
+                     onerror="javascript:this.src='static/errBook.png'">
                 <div class="book-info-detail">
                     <p class="book-title" v-if="book">{{book.name}}</p>
                     <p class="book-author" v-if="book">{{book.author}}</p>
@@ -77,22 +77,28 @@
                 return parseInt(this.book.wordCount / 10000, 10)
             },
             imgUrl () {
-                return this.book.img
+                return this.book.cover
             }
         },
         created () {
             // 判断是否收藏，收藏的话，直接从缓存中取
             let localShelf = util.getLocalStroageData('followBookList')
             this.isFollowed = !!(localShelf && localShelf[this.$route.params.bookId])
+            Indicator.open()
             if (!!this.isFollowed) {
                 this.book = localShelf[this.$route.params.bookId];
                 api.getBook(this.$route.params.bookId).then(response => {
                     this.book = response.data
+                    let str=response.data.img.split(' ')[0]
+                    this.book.cover = str.substring(0,str.length - 1)
+                    Indicator.close()
                 })
             } else {
-                Indicator.open()
+
                 api.getBook(this.$route.params.bookId).then(response => {
                     this.book = response.data
+                    let str=response.data.img.split(' ')[0]
+                    this.book.cover = str.substring(0,str.length - 1)
                     /**
                      * 设置默认小说源为优质书源
                      */
@@ -136,7 +142,6 @@
                 this.isFollowed = !!(localShelf && localShelf[this.book.link])
             },
             followAction () {
-                console.log(this.book)
                 let localShelf = util.getLocalStroageData('followBookList') ? util.getLocalStroageData('followBookList') : {}
                 if (this.isFollowed) {
                     // 删除该书籍在本地的缓存记录
@@ -147,7 +152,7 @@
                 } else {
                     // 以bookId为键值，方便后续删除等操作
                     localShelf[this.book.link] = {
-                        cover: this.book.img,
+                        cover: this.book.cover,
                         title: this.book.name,
                         author: this.book.author,
                         source: this.$store.state.source
@@ -186,6 +191,7 @@
     .book-info img {
         width: 4rem;
         height: 5rem;
+        border-radius: 6px;
     }
 
     .book-info .book-info-detail {

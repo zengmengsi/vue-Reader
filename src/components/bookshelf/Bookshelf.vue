@@ -80,7 +80,9 @@ export default {
       }
       return bookListArray
     },
-
+      getBook (id) {
+          this.$router.push('/book/' + id)
+      },
 //    getBookUpdate () {
 //      let localShelf,
 //        that = this
@@ -229,5 +231,6 @@ export default {
 }
 .category li img{
     height: 140px;
+    box-shadow: 3px 3px 4px #eee;
 }
 </style>

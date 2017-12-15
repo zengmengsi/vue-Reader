@@ -85,8 +85,7 @@ export default {
       if (!this.searchWord) {
         this.autoCompleteList = []
         this.searchResult = []
-        this.searchHistory = util.getLocalStroageData('searchHistory') ? util.getLocalStroageData('searchHistory')
-					: []
+        this.searchHistory = util.getLocalStroageData('searchHistory') ? util.getLocalStroageData('searchHistory') : []
       }
     }
   },

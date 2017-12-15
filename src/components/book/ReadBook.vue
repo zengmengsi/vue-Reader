@@ -103,7 +103,7 @@ export default {
   },
   created () {
     let readRecord = util.getLocalStroageData('followBookList')
-    api.getChapters(this.$store.state.source).then(response => {
+    api.getChapters(this.$route.params.bookId).then(response => {
       this.bookChapter.chapters = response.data
       this.currentChapter = readRecord && readRecord[this.$route.params.bookId] && readRecord[this.$route.params.bookId].chapter ? readRecord[this.$route.params.bookId].chapter : 0
       // 默认取前50章节
