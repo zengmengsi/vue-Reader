@@ -18,7 +18,7 @@
 				<img src="../../assets/moon.svg">
 				<span>夜间模式</span>
 			</v-touch>
-			<div class="menu-btn">
+			<div class="menu-btn" @tap="isShowSet=true">
 				<img src="../../assets/setting.svg">
 				<span>设置</span>
 			</div>
@@ -28,7 +28,7 @@
 			</v-touch>
 		</div>
 		<!--阅读设置-->
-		<!--<div class="read-setting">
+		<div class="read-setting" v-show="isShowSet">
 	            <div class="setting-item">
 	                <v-touch tag="span" @tap="increaseFont">
 	                    <img src="../../assets/font_smaller.svg" />
@@ -53,7 +53,7 @@
 	                    <li></li>
 	                </ul>
 	            </div>
-	        </div>-->
+	        </div>
 		<!--目录-->
 		<div class="chapter-list" v-show="isShowChapter" v-scroll="onScroll">
 			<div class="chapter-contents">
@@ -88,7 +88,8 @@ export default {
       currentChapter: 0,
       nightMode: false, // 夜间/日间模式却换
       isShowChapter: false, // 是否显示目录
-      chapterDescSort: false // 是否降序排列
+      chapterDescSort: false,// 是否降序排列
+        isShowSet:false,//显示设置
     }
   },
   computed: {
@@ -397,4 +398,12 @@ h3 {
 	width: 1rem;
 	height: 1rem;
 }
+    .read-setting{
+        position: fixed;
+        bottom: 0px;
+        height: 6rem;
+        width: 100%;
+        text-align: center;
+        background-color: #f2f2f2;
+    }
 </style>
