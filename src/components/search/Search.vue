@@ -4,7 +4,7 @@
 			<span class="search-icon">
 				<img src="../../assets/search.svg">
 			</span>
-			<input type="text" class="search-input" placeholder="输入书名或者作者名" @input="autoComplete" @keyup.enter="fuzzySearch" v-model="searchWord">
+			<input type="text" class="search-input" placeholder="输入书名或者作者名"  @keyup.enter="fuzzySearch" v-model="searchWord">
 		</div>
 		<!--显示热搜词与搜索历史（优先级最低）-->
 		<div v-if="!searchWord" class="search-info">
@@ -14,7 +14,7 @@
 				</v-touch>
 			</ul>
 			<div class="search-history">
-				<div class="fun-bar">
+				<div class="fun-bar" v-if="searchHistory.length!==0">
 					<span>搜索历史</span>
 					<v-touch @tap="clearSearchHistory">
 						<img src="../../assets/trash.svg">
@@ -27,15 +27,15 @@
 
 		</div>
 
-		<!--显示自动补全（优先级最高）-->
-		<ul class="auto-complete-list" v-if="autoCompleteList.length && searchWord">
-			<v-touch tag="li" v-for="(item, index) in autoCompleteList" :key="index" @tap="fuzzySearch">
-				{{item}}
-			</v-touch>
-		</ul>
+		<!--&lt;!&ndash;显示自动补全（优先级最高）&ndash;&gt;-->
+		<!--<ul class="auto-complete-list" v-if="autoCompleteList.length && searchWord">-->
+			<!--<v-touch tag="li" v-for="(item, index) in autoCompleteList" :key="index" @tap="fuzzySearch">-->
+				<!--{{item}}-->
+			<!--</v-touch>-->
+		<!--</ul>-->
 		<!--显示搜索结果（优先级中）-->
 		<ul class="search-result" v-if="searchResult.length">
-			<Booklist v-for="book in searchResult" :book="book" :key="book._id"></Booklist>
+			<Booklist v-for="book in searchResult" :book="book" :key="book.link"></Booklist>
 		</ul>
 	</div>
 </template>
@@ -111,8 +111,8 @@ export default {
       util.setLocalStroageData('searchHistory', [this.searchWord, ...searchHistory])
       this.$store.commit(SET_BACK_POSITION, '搜索')
       api.fuzzySearch(this.searchWord).then(response => {
-        this.searchResult = response.data.books
-        this.autoCompleteList = []
+        this.searchResult = response.data.data
+//        this.autoCompleteList = []
         Indicator.close()
       }).catch(err => {
         console.log(err)
@@ -217,7 +217,8 @@ export default {
 }
 
 .search-history {
-	padding: 1rem
+	padding: 1rem;
+    margin-top: 2rem;
 }
 
 .search-history .fun-bar {

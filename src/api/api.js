@@ -38,6 +38,13 @@ export default {
   getBookChapterContent (link) {
     return instance.get('/content?link=' + link)
   },
+  /**
+   * 模糊搜索
+   *  @param {String} searchWord 搜索内容
+   */
+  fuzzySearch (searchWord) {
+    return instance.get('/search?search=' + searchWord)
+  },
   // ------------------------
   /**
      * 获取所有的排行榜类型
@@ -155,13 +162,7 @@ export default {
     return Vue.http.get('/book/auto-complete?query=' + searchWord)
   },
 
-  /**
-     * 模糊搜索
-     *  @param {String} searchWord 搜索内容
-     */
-  fuzzySearch (searchWord) {
-    return Vue.http.get('/book/fuzzy-search?query=' + searchWord)
-  },
+
 
   /**
      * 获取小说最新章节（书架）

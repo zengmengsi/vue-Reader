@@ -1,11 +1,11 @@
 <template>
 	<li @click="getBook()">
-		<img :src="imgUrl">
+		<img :src="imgUrl" onerror="javascript:this.src='static/errBook.png'">
 		<div class="book-info">
-			<p class="book-title">{{book.title}}</p>
+			<p class="book-title">{{book.name}}</p>
 			<p class="book-author">{{book.author}} | {{book.cat}}</p>
-			<p class="short-intro">{{book.shortIntro}}</p>
-			<p class="reader-info">{{latelyFollower}}万人气 | {{book.retentionRatio}}%读者留存</p>
+			<p class="short-intro">{{book.page}}</p>
+			<!--<p class="reader-info">{{latelyFollower}}万人气 | {{book.retentionRatio}}%读者留存</p>-->
 		</div>
 	</li>
 </template>
@@ -25,7 +25,7 @@ export default {
       return (this.book.latelyFollower / 10000).toFixed(1)
     },
     imgUrl () {
-      return util.staticPath + this.book.cover
+      return this.book.img
     }
   },
   methods: {
@@ -33,8 +33,8 @@ export default {
       // 只记录从不是搜索结果中进入书本详情的路径，不然会出现死循环
       // if(this.$route.path.indexOf('/search') === -1){
       //     this.$store.commit('setPrePath', this.$route.fullPath);
-      // } 
-      this.$router.push('/book/' + this.book._id)
+      // }
+      this.$router.push('/book/' + this.book.link)
     }
   }
 }
