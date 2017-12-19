@@ -89,16 +89,18 @@
                 this.book = localShelf[this.$route.params.bookId];
                 api.getBook(this.$route.params.bookId).then(response => {
                     this.book = response.data
-                    let str=response.data.img.split(' ')[0]
-                    this.book.cover = str.substring(0,str.length - 1)
+                    this.book.cover = response.data.img
+//                    let str = response.data.img.split(' ')[0]
+//                    this.book.cover = str.substring(0,str.length - 1)
                     Indicator.close()
                 })
             } else {
 
                 api.getBook(this.$route.params.bookId).then(response => {
                     this.book = response.data
-                    let str=response.data.img.split(' ')[0]
-                    this.book.cover = str.substring(0,str.length - 1)
+                    this.book.cover = response.data.img
+//                    let str=response.data.img.split(' ')[0]
+//                    this.book.cover = str.substring(0,str.length - 1)
                     /**
                      * 设置默认小说源为优质书源
                      */

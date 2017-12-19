@@ -1,15 +1,9 @@
 [![DeepScan Grade](https://deepscan.io/api/projects/479/branches/739/badge/grade.svg)](https://deepscan.io/dashboard/#view=project&pid=479&bid=739)
-# vue-nReader
+# vue-Reader
 
-使用`mint-ui`对整个项目进行了重构，整理了项目的目录结构与代码，较上个版本新增了`小说换源`、`搜索历史记录`、优化了`滚动下载`和`下拉刷新`
+整个项目一共14个页面（包括通用组件），主要使用了`vue2.0+axios+vuex`，`mint-ui`框架，主要实现了我的书架，小说排行榜，小说分类，小说详情，小说阅读，搜索页面，小说阅读记录等页面。达到了可用来看小说的基本需求。
 
-整个项目一共14个页面（包括通用组件），主要使用了vue2.0+vue-router+vuex，主要实现了小说排行榜，小说分类，小说详情，小说阅读，搜索页面，小说阅读记录等页面。达到了可用来看小说的基本需求。
-
-项目中的API均来自追书神器，纯属共享学习之用，有任何疑问或建议可提[issue](https://github.com/zimplexing/vue-nReader/issues/new)，使用代理，本地可以完美运行。
-
-[API文档](https://github.com/zimplexing/vue-nReader/blob/master/doc/zhuishushenqi.md)
-
-[本地运行代理](https://gist.github.com/zimplexing/c7c1f15ea3f270de3962fc0ab466d82e)
+项目中的API来自pathy后台实现，纯属共享学习之用，有任何疑问或建议可提，使用代理，本地可以完美运行。
 
 ## 本地运行
 
@@ -26,14 +20,14 @@ npm run build
 
 ```
 ## 预览地址
-项目放在google云的虚拟主机上，访问速度看人品。代理也运行在上面，所以加载速度可能会比较慢。其中有一些小说封面会加载不出来，这个是api的问题，并不是网络的原因。
+项目放在阿里云的虚拟主机上，后台返回较慢，后面会继续优化
 
 
 电脑端请开启开发者模式
-[在线预览地址](http://65.49.197.99:32771)
+[在线预览地址](https://www.aisbi.com/)
 
 手机扫码：
-![](https://github.com/zimplexing/vue-nReader/blob/master/screenshot/nReader.png?raw=true)
+![](https://github.com/zengmengsi/vue-Reader/blob/master/static/errBook.png)
 
 ## 实现功能
 
@@ -42,27 +36,30 @@ npm run build
 - [x] 排行榜
 - [x] 搜索（搜索历史，自动补全）
 - [x] 小说详情
-- [x] **小说换源**
 - [x] 阅读历史记录（记录阅读章节）
 - [x] 阅读夜间模式
-- [x] 章节倒叙查看
+- [x] 阅读样式设置
 
 ## TODO
-- [ ] 记录阅读历史位置
+- [ ] 书架点击阅读，直接打开进行阅读
 
-- [ ] 增加发现页面
+- [ ] 记录滚动条的阅读位置
 
-- [ ] 社区评论功能
+- [ ] 返回不正确
 
-- [ ] 组件切换动效
+- [ ] 排行榜
 
-- [ ] 阅读界面设置功能
+- [ ] 分类
 
 - [ ] 小说下载
 
+- [ ] service worker 功能离线阅读
+
 ## 屏幕截图
 
-<img src="https://github.com/zimplexing/vue-nReader/blob/master/screenshot/bookshelf.png?raw=true" width="280"/> <img src="https://github.com/zimplexing/vue-nReader/blob/master/screenshot/catory.png?raw=true" width="280"/> <img src="https://github.com/zimplexing/vue-nReader/blob/master/screenshot/rank.png?raw=true" width="280"/> <img src="https://github.com/zimplexing/vue-nReader/blob/master/screenshot/catDetail.png?raw=true" width="280"/> <img src="https://github.com/zimplexing/vue-nReader/blob/master/screenshot/rankType.png?raw=true" width="280"/> <img src="https://github.com/zimplexing/vue-nReader/blob/master/screenshot/search.png?raw=true" width="280"/> <img src="https://github.com/zimplexing/vue-nReader/blob/master/screenshot/book.png?raw=true" width="280"/> <img src="https://github.com/zimplexing/vue-nReader/blob/master/screenshot/readbook.png?raw=true" width="280"/> <img src="https://github.com/zimplexing/vue-nReader/blob/master/screenshot/nightMode.png?raw=true" width="280"/> <img src="https://github.com/zimplexing/vue-nReader/blob/master/screenshot/chapter.png?raw=true" width="280"/>
+<img src="https://github.com/zengmengsi/vue-Reader/blob/master/screnshot/book.png" width="280"/> <img src="https://github.com/zengmengsi/vue-Reader/blob/master/screnshot/booklist.png" width="280"/>
+<img src="https://github.com/zengmengsi/vue-Reader/blob/master/screnshot/bookshelf_wu.pn?raw=true" width="280"/>
+
 
 ## 问题
 记录在项目中遇到的一些问题，和解决方法

@@ -36,7 +36,7 @@ new Vue({
 })
 
 // Disable context menu
-document.addEventListener('contextmenu', event => {
+document.addEventListener('contextmenu', (event) => {
   event.preventDefault()
   event.stopPropagation()
 })

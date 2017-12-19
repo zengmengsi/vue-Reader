@@ -5,7 +5,7 @@
 				<mt-button icon="back">返回</mt-button>
 			</router-link>
 		</mt-header>
-		<v-touch class="content" @tap="operationAction($event)" :class="{'night-mode':nightMode}">
+		<v-touch class="content" @tap="operationAction($event)" :class="[bgcolorClass,{'night-mode':nightMode}]">
 			<h3>{{bookChaptersContent.title}}</h3>
 			<article v-html="bookChaptersBody"></article>
 		</v-touch>
@@ -18,10 +18,10 @@
 				<img src="../../assets/moon.svg">
 				<span>夜间模式</span>
 			</v-touch>
-			<div class="menu-btn" @tap="isShowSet=true">
+			<v-touch class="menu-btn" @tap="isShowSet=true">
 				<img src="../../assets/setting.svg">
 				<span>设置</span>
-			</div>
+			</v-touch>
 			<v-touch class="menu-btn" @tap="showChapter">
 				<img src="../../assets/list.svg">
 				<span>目录</span>
@@ -29,30 +29,48 @@
 		</div>
 		<!--阅读设置-->
 		<div class="read-setting" v-show="isShowSet">
-	            <div class="setting-item">
-	                <v-touch tag="span" @tap="increaseFont">
-	                    <img src="../../assets/font_smaller.svg" />
-	                </v-touch>
-	                <v-touch tag="span" @tap="decreaseFont">
-	                    <img src="../../assets/font_bigger.svg" />
-	                </v-touch>
-	            </div>
-	            <div class="setting-item">
-	                <v-touch tag="span" @tap="smallLineSpacing">
-	                    <img src="../../assets/line_spacing_small.svg" />
-	                </v-touch>
-	                <v-touch tag="span" @tap="normalLineSpacing">
-	                    <img src="../../assets/line_spacing_normal.svg" />
-	                </v-touch>
-	                <v-touch tag="span" @tap="bigLineSpacing">
-	                    <img src="../../assets/line_spacing_big.svg" />
-	                </v-touch>
-	            </div>
-	            <div class="setting-item">
-	                <ul class="bg-color">
-	                    <li></li>
-	                </ul>
-	            </div>
+            <div class="setting-item">
+                <v-touch tag="span" @tap="decreaseFont">
+                    <i class="iconfont">&#xe605;</i>
+                </v-touch>
+                <v-touch tag="span" @tap="nomalFont">
+                    <i class="iconfont">&#xe8eb;</i>
+                </v-touch>
+                <v-touch tag="span" @tap="increaseFont">
+                    <i class="iconfont">&#xe603;</i>
+                </v-touch>
+            </div>
+            <div class="line1pix"></div>
+            <div class="setting-item" style="height: 3rem">
+                <v-touch tag="span" @tap="bgcolorClass='huyan'">
+                    <div class="bg-color" style="background-color: #faf6ed"></div>
+                    <div class="bg-text">护眼</div>
+                </v-touch>
+                <v-touch tag="span" @tap="bgcolorClass='qinxin'">
+                    <div class="bg-color" style="background-color: #ceebcf"></div>
+                    <div class="bg-text">清新</div>
+                </v-touch>
+                <v-touch tag="span" @tap="bgcolorClass='haijun'">
+                    <div class="bg-color" style="background-color: #09598c"></div>
+                    <div class="bg-text">海军蓝</div>
+                </v-touch>
+                <v-touch tag="span" @tap="bgcolorClass='zhihuang'">
+                    <div class="bg-color" style="background-color: #dec79d"></div>
+                    <div class="bg-text">纸黄色</div>
+                </v-touch>
+            </div>
+            <div class="line1pix"></div>
+            <div class="setting-item">
+                <v-touch tag="span" @tap="curlineheight+=0.2;setLineHeight()">
+                    <i class="iconfont">&#xe608;</i>
+                </v-touch>
+                <v-touch tag="span" @tap="curlineheight=1.5;setLineHeight()">
+                    <i class="iconfont">&#xe607;</i>
+                </v-touch>
+                <v-touch tag="span" @tap="curlineheight-=0.2;setLineHeight()">
+                    <i class="iconfont">&#xe602;</i>
+                </v-touch>
+            </div>
 	        </div>
 		<!--目录-->
 		<div class="chapter-list" v-show="isShowChapter" v-scroll="onScroll">
@@ -88,14 +106,16 @@ export default {
       currentChapter: 0,
       nightMode: false, // 夜间/日间模式却换
       isShowChapter: false, // 是否显示目录
-      chapterDescSort: false,// 是否降序排列
-        isShowSet:false,//显示设置
+      chapterDescSort: false, // 是否降序排列
+      isShowSet: false,
+      curfontsize: 0.8, //当前字体大小
+      curlineheight: 1.5, // 行间距
+      bgcolorClass: 'test', //设置背景色样式
     }
   },
   computed: {
     bookChaptersBody () {
 //      let content = this.bookChaptersContent && this.bookChaptersContent.cpContent ? 'cpContent' : 'body'
-//        return this.bookChaptersContent
       return this.bookChaptersContent && this.bookChaptersContent.replace(/\n/g, '<br/>&nbsp&nbsp')
     }
   },
@@ -110,7 +130,7 @@ export default {
       // 默认取前50章节
       this.loadedChapters = this.bookChapter.chapters.slice(0, 50)
       Indicator.close()
-//      this.getBookChapterContent()
+      this.getBookChapterContent()
     }).catch(err => {
       console.log(err)
       MessageBox.alert('加载失败，请重试').then(() => {
@@ -137,24 +157,14 @@ export default {
   },
   methods: {
     getBookChapterContent () {
-      // 不同源之间的章节数量不一样，当前阅读章节与源章节取小的，避免报错
       let lastChapter = this.currentChapter >= this.bookChapter.chapters.length - 1 ? this.bookChapter.chapters.length - 1 : this.currentChapter
       Indicator.open('加载中')
       // 无论正序还是倒叙 当前章节字段都是 按正序的序号
-      let conid=JSON.parse(this.bookChapter.chapters[lastChapter]).link;
-      api.getBookChapterContent(conid).then(response => {
-        /**
-                 *  判断是否是正版源，如果是正版，给出换源提示
-                 */
-//        if (response.data.chapter.cpContent && response.data.chapter.isVip) {
-//          MessageBox.alert('章节为正版源，请换源后重试').then(() => {
-//            this.$router.push('/changeSource/' + this.$route.params.bookId)
-//          })
-//        } else {
-          this.bookChaptersContent = response.data.msg
-          document.getElementById('container').scrollTop = 0
-//        }
+      api.getBookChapterContent(JSON.parse(this.bookChapter.chapters[lastChapter]).link).then(response => {
+        this.bookChaptersContent = response.data.msg
+        document.getElementById('container').scrollTop = 0
         Indicator.close()
+        this.recordReadHis();//记录阅读位置
       }).catch(err => {
         Indicator.close()
         MessageBox.alert('加载失败，请重试').then(() => {
@@ -168,6 +178,11 @@ export default {
       let el = $event.pointers[0] || $event.srcEvent
       if (this.isShowChapter) {
         this.isShowChapter = false
+        this.isShowSet = false
+        return
+      }
+      if (this.isShowSet) {
+        this.isShowSet = false
         return
       }
       let screenHeight = document.body.clientHeight
@@ -211,15 +226,28 @@ export default {
     },
     // 记录阅读历史
     recordReadHis () {
+      //收获的小说才会记录阅读位置，不收藏的不记录
       let readRecord = util.getLocalStroageData('followBookList') || {}
-      readRecord[this.$route.params.bookId] = {
-        cover: this.$store.state.bookInfo.cover,
-        title: this.$store.state.bookInfo.title,
-        chapter: this.currentChapter,
-        source: this.$store.state.source,
-        readPos: document.getElementById('container').scrollTop
+      if (readRecord[this.$route.params.bookId]) {
+        readRecord[this.$route.params.bookId] = {
+          cover: this.$store.state.bookInfo.cover,
+          title: this.$store.state.bookInfo.name,
+          author: this.$store.state.bookInfo.author,
+          source: this.$store.state.source,
+          chapter: this.currentChapter,
+          readPos: document.getElementById('container').scrollTop
+        }
+        util.setLocalStroageData('followBookList', readRecord)
       }
-      util.setLocalStroageData('followBookList', readRecord)
+//      let readRecord = util.getLocalStroageData('followBookList') || {}
+//      readRecord[this.$route.params.bookId] = {
+//        cover: this.$store.state.bookInfo.cover,
+//        title: this.$store.state.bookInfo.title,
+//        chapter: this.currentChapter,
+//        source: this.$store.state.source,
+//        readPos: document.getElementById('container').scrollTop
+//      }
+//      util.setLocalStroageData('followBookList', readRecord)
     },
     // 切换章节查看模式
     descSort () {
@@ -247,19 +275,36 @@ export default {
          * 增加字体
          */
     increaseFont () {
-      // let articleElem = document.getElementsByTagName('article')[0]
-      // articleElem.style.fontSize
+      this.curfontsize += 0.1
+      document.getElementsByTagName('article')[0].style.fontSize = this.curfontsize + 'rem'
     },
     /**
          * 减小字体
          */
     decreaseFont () {
-      // let articleElem = document.getElementsByTagName('article')[0]
-    }
+      this.curfontsize -= 0.1
+      document.getElementsByTagName('article')[0].style.fontSize = this.curfontsize + 'rem'
+    },
+      /**
+       * 正常字体
+       */
+     nomalFont (){
+          this.curfontsize=0.8
+          document.getElementsByTagName('article')[0].style.fontSize = this.curfontsize + 'rem'
+     },
+      /**
+       * 设置行间距
+       */
+     setLineHeight(){
+          document.getElementsByTagName('article')[0].style.lineHeight = this.curlineheight + 'rem'
+     }
   },
-  /**
-     * 对未加入书架的小说，提示是否加入书架
-     */
+
+
+
+//  /**
+//     * 对未加入书架的小说，提示是否加入书架
+//     */
 //  beforeRouteLeave (to, from, next) {
 //    let readRecord = util.getLocalStroageData('followBookList') || {}
 //    if (!readRecord[this.$route.params.bookId]) {
@@ -295,7 +340,7 @@ export default {
 article {
 	font-size: 0.8rem;
 	line-height: 1.5rem;
-	padding: 0 1rem;
+	padding: 0 0.5rem;
 }
 
 h3 {
@@ -350,11 +395,6 @@ h3 {
 	font-size: 1.5rem;
 }
 
-.night-mode {
-	background: #383434;
-	color: #807d7d;
-}
-
 .chapter-list {
 	position: absolute;
 	top: 0;
@@ -400,10 +440,55 @@ h3 {
 }
     .read-setting{
         position: fixed;
-        bottom: 0px;
-        height: 6rem;
+        bottom: -1px;
+        height: 7rem;
         width: 100%;
         text-align: center;
-        background-color: #f2f2f2;
+        background-color: #fafafa;
     }
+    .setting-item{
+        height: 2rem;
+        display: flex;
+        line-height: 2rem;
+    }
+    .setting-item span{
+        flex-grow: 1;
+    }
+    .line1pix{
+        height: 1px;
+        background-color: #ccc;
+        transform: scaleY(0.5);
+    }
+    .bg-color{
+        height: 30px;
+        width: 30px;
+        background-color: #ccc;
+        border-radius: 15px;
+        margin: 4px auto;
+    }
+    .bg-text{
+        font-size: 0.6rem;
+        color: #333;
+        line-height: 1rem;
+    }
+    .huyan{
+        background-color: #faf6ed;
+        color: #333;
+    }
+    .qinxin{
+        background-color: #ceebcf;
+        color: #333;
+    }
+    .haijun{
+        background-color: #09598c;
+        color: #f0f0f0;
+    }
+    .zhihuang{
+        background-color: #dec79d;
+        color: #220700;
+    }
+.night-mode {
+    background: #383434;
+    color: #807d7d;
+}
 </style>
