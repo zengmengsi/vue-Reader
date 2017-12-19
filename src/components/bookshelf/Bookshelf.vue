@@ -7,7 +7,7 @@
         </div>
         <ul class="category" v-if="books.length">
             <li v-for="item in books">
-                <img :src="item.cover" @click="getBook(item.source)">
+                <img :src="item.cover" @click="getBook(item.bookid)">
                 <p>{{item.title}}</p>
                 <div>{{item.author}}</div>
             </li>

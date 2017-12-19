@@ -157,7 +157,7 @@
                         cover: this.book.cover,
                         title: this.book.name,
                         author: this.book.author,
-                        source: this.$store.state.source
+                        bookid: this.$route.params.bookId
                     }
                     util.setLocalStroageData('followBookList', localShelf)
                     this.isFollowed = !this.isFollowed

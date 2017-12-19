@@ -6,7 +6,7 @@
 			</router-link>
 		</mt-header>
 		<v-touch class="content" @tap="operationAction($event)" :class="[bgcolorClass,{'night-mode':nightMode}]">
-			<h3>{{bookChaptersContent.title}}</h3>
+			<h3>{{bookChaptersContent.links}}</h3>
 			<article v-html="bookChaptersBody"></article>
 		</v-touch>
 		<div class="menu" v-if="operation">
@@ -116,7 +116,7 @@ export default {
   computed: {
     bookChaptersBody () {
 //      let content = this.bookChaptersContent && this.bookChaptersContent.cpContent ? 'cpContent' : 'body'
-      return this.bookChaptersContent && this.bookChaptersContent.replace(/\n/g, '<br/>&nbsp&nbsp')
+      return this.bookChaptersContent && this.bookChaptersContent.msg.replace(/\n/g, '<br/>&nbsp&nbsp')
     }
   },
   beforeCreate () {
@@ -161,7 +161,7 @@ export default {
       Indicator.open('加载中')
       // 无论正序还是倒叙 当前章节字段都是 按正序的序号
       api.getBookChapterContent(JSON.parse(this.bookChapter.chapters[lastChapter]).link).then(response => {
-        this.bookChaptersContent = response.data.msg
+        this.bookChaptersContent = response.data
         document.getElementById('container').scrollTop = 0
         Indicator.close()
         this.recordReadHis();//记录阅读位置
@@ -233,7 +233,7 @@ export default {
           cover: this.$store.state.bookInfo.cover,
           title: this.$store.state.bookInfo.name,
           author: this.$store.state.bookInfo.author,
-          source: this.$store.state.source,
+          bookid:this.$route.params.bookId,
           chapter: this.currentChapter,
           readPos: document.getElementById('container').scrollTop
         }
