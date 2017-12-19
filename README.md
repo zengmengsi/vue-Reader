@@ -57,8 +57,8 @@ npm run build
 
 ## 屏幕截图
 
-<img src="https://github.com/zengmengsi/vue-Reader/blob/master/screnshot/book.png" width="280"/> <img src="https://github.com/zengmengsi/vue-Reader/blob/master/screnshot/booklist.png" width="280"/>
-<img src="https://github.com/zengmengsi/vue-Reader/blob/master/screnshot/bookshelf_wu.pn?raw=true" width="280"/>
+<img src="https://github.com/zengmengsi/vue-Reader/blob/master/screenshot/book.png" width="280"/> <img src="https://github.com/zengmengsi/vue-Reader/blob/master/screenshot/booklist.png" width="280"/>
+<img src="https://github.com/zengmengsi/vue-Reader/blob/master/screenshot/bookshelf_wu.pn?raw=true" width="280"/>
 
 
 ## 问题
