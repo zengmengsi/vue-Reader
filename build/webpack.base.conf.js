@@ -54,5 +54,12 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  // externals: {
+  //   'vue': 'Vue',
+  //   'vue-router': 'VueRouter',
+  //   'vuex': 'Vuex',
+  //   'axios': 'axios',
+  //   'mint-ui':'MintUI'
+  // }
 }

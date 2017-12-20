@@ -33,7 +33,7 @@ module.exports = {
         target: 'https://www.aisbi.com',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': '/'
+          '^/api': '/api'
         }
       }
     },

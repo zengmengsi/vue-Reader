@@ -46,8 +46,14 @@ li {
 .mint-header{
     background-color: #e7604a !important;
 }
+.mint-header.is-fixed{
+    font-size: 1rem;
+}
 .search-head{
     background-color: #e7604a !important;
+}
+.search-input{
+    font-size: 0.8rem;
 }
 .mint-tabbar > .mint-tab-item.is-selected{
     color: #e7604a !important;

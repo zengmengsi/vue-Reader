@@ -84,4 +84,7 @@ export default {
 	width: 100vw;
 	min-height: 100vh;
 }
+.mint-header-title{
+    font-weight:800
+}
 </style>

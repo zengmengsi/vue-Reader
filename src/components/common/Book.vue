@@ -47,7 +47,7 @@
 
 <script>
     import api from '@/api/api'
-    import moment from 'moment'
+//    import moment from 'moment'
     import util from '@/utils/util'
     import {
         Indicator
@@ -57,7 +57,7 @@
         SET_READ_BOOK
     } from '@/store/mutationsType'
 
-    moment.locale('zh-cn')
+//    moment.locale('zh-cn')
     export default {
         name: 'Book',
         data () {
@@ -68,9 +68,9 @@
             }
         },
         filters: {
-            ago (time) {
-                return moment(time).fromNow()
-            }
+//            ago (time) {
+//                return moment(time).fromNow()
+//            }
         },
         computed: {
             wordCount () {

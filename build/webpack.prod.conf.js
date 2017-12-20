@@ -8,6 +8,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
@@ -95,6 +96,8 @@ const webpackConfig = merge(baseWebpackConfig, {
     ])
   ]
 })
+
+webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 
 if (config.build.productionGzip) {
   const CompressionWebpackPlugin = require('compression-webpack-plugin')
