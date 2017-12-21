@@ -6,7 +6,18 @@
                 <v-touch tag="li" :class="{'active': index === minorSelected}" v-for="(minor, index) in mins" :key="index" @tap="setMinor(minor,index)">{{minor}}</v-touch>
             </ul>
         </div>
-
+        <section>
+            <ul class="category2">
+                <li v-for="item in typeList" @click="getBook(JSON.parse(item).link)">
+                    <img :src="JSON.parse(item).img">
+                    <div class="cont">
+                        <p>{{JSON.parse(item).name}}</p>
+                        <!--<div class="author">{{JSON.parse(item).author}}</div>-->
+                        <div class="detail">{{JSON.parse(item).msg}}</div>
+                    </div>
+                </li>
+            </ul>
+        </section>
         <section>
             <p class="category-type"><span>推荐小说</span></p>
            <ul class="category">
@@ -38,19 +49,27 @@ export default {
     return {
       tuijianlist: null,
       mins: ['玄幻魔法', '武侠修真', '纯爱耽美', '都市言情', '职场校园', '穿越重生', '历史军事', '网游动漫', '恐怖灵异', '科幻小说', '美文名著'],
-      minorSelected: null
+      minorSelected: null,
+      typeList:[]
     }
   },
   methods: {
     setMinor: function (minor, index) {
       this.minorSelected = index
       this.minor = minor
+      this.loading=true
+      var that = this
+      api.getCategoryByType(index).then(res => {
+        that.typeList=res.data
+        that.loading = false
+      })
     },
     getBook (id) {
       this.$router.push('/book/' + id)
     }
   },
   created () {
+    this.loading=true
     var that = this
     api.getListByType(1).then(response => {
       that.tuijianlist = response.data
@@ -160,5 +179,36 @@ section{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+.category2 li{
+    width:47%;
+    margin-left:3%;
+    margin-top:4%;
+    display: inline-block;
+}
+.category2 img{
+    float:left;
+    width:46%;
+}
+.category2 p{
+    margin: 2px 0;
+    font-size: 0.8rem;
+}
+.category2 .author{
+    font-size:0.7rem;
+    color:#999;
+    line-height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.category2 .detail{
+    font-size: 0.6rem;
+    color:#aca199;
+}
+.category2 .cont{
+    width:50%;
+    float:right;
+    height: 108px;
+    overflow: hidden;
 }
 </style>

@@ -16,6 +16,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "chalk": "^2.3.0",
+    "eslint-plugin-vuefix": "^0.2.1",
     "mint-ui": "^2.2.7",
     "vue": "^2.2.6",
     "vue-router": "^3.0.1",

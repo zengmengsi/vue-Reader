@@ -46,8 +46,8 @@ li {
 .mint-header{
     background-color: #e7604a !important;
 }
-.mint-header.is-fixed{
-    font-size: 1rem;
+.mint-header-title{
+    font-size: 1rem !important;
 }
 .search-head{
     background-color: #e7604a !important;

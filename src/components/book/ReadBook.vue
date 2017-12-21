@@ -289,7 +289,7 @@ export default {
        * 正常字体
        */
      nomalFont (){
-          this.curfontsize=0.8
+          this.curfontsize=1
           document.getElementsByTagName('article')[0].style.fontSize = this.curfontsize + 'rem'
      },
       /**
@@ -338,7 +338,7 @@ export default {
 }
 
 article {
-	font-size: 0.8rem;
+	font-size: 1.0rem;
 	line-height: 1.5rem;
 	padding: 0 0.5rem;
 }

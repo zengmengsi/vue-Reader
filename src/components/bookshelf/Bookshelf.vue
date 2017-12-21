@@ -220,7 +220,7 @@ export default {
         color: #333333b8;
     }
     .no-content .mint-button--primary {
-        background-color: #ffc107 !important;
+        background-color: #f17e43 !important;
     }
     .category{
         margin-top: 20px;
