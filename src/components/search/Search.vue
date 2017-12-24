@@ -45,7 +45,7 @@ import api from '@/api/api'
 import Booklist from '@/components/common/Booklist'
 import util from '@/utils/util'
 import {
-  Indicator
+  Indicator,Toast
 } from 'mint-ui'
 import {
   SET_BACK_POSITION
@@ -108,11 +108,17 @@ export default {
       this.searchWord = el.target.innerText || this.searchWord
       // 设置搜索历史
       let searchHistory = util.getLocalStroageData('searchHistory') ? util.getLocalStroageData('searchHistory') : []
-      util.setLocalStroageData('searchHistory', [this.searchWord, ...searchHistory])
+      if(searchHistory.indexOf(this.searchWord)<0){
+          util.setLocalStroageData('searchHistory', [this.searchWord, ...searchHistory])
+      }
       this.$store.commit(SET_BACK_POSITION, '搜索')
       api.fuzzySearch(this.searchWord).then(response => {
-        this.searchResult = response.data.data
-//        this.autoCompleteList = []
+        if(response.data.data.length>0){
+            this.searchResult = response.data.data
+        }else{
+            Toast('搜索无结果')
+        }
+        this.autoCompleteList = []
         Indicator.close()
       }).catch(err => {
         console.log(err)
