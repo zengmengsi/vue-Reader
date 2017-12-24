@@ -2,7 +2,7 @@
 	<div class="book-list-wrap">
 		<!--<mt-loadmore :bottom-method="loadBottom" ref="loadmore">-->
 		<v-touch tag="ul" @swipeleft="swipeleft" @swiperight="swiperight">
-			<Booklist v-for="book in rank.books" :book="book" :key="book._id"></Booklist>
+			<Booklist v-for="book in rank.books" :book="book" :key="book.link"></Booklist>
 		</v-touch>
 		<!--</mt-loadmore>-->
 	</div>
@@ -33,7 +33,7 @@ export default {
       Indicator.open()
       switch (this.$route.path) {
         case '/ranklist/weekRank':
-          this.rankType = this.$store.state.weekRankId
+          this.rankType = 1
           this.currentLoadPage = 0
           break
         case '/ranklist/monthRank':
@@ -49,9 +49,9 @@ export default {
           break
       }
       api.getRankList(this.rankType).then(response => {
-        this.rank = response.data.ranking
+        this.rank.books = response.data
         // 首次加载前20条数据
-        this.books = response.data.ranking.books.slice(0, 20)
+//        this.books = response.data.books.slice(0, 20)
         Indicator.close()
       }).catch(error => {
         Indicator.close()

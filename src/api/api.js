@@ -53,6 +53,13 @@ export default {
   getCategoryByType (type) {
     return instance.get(`/article?type=${type}&num=1`)
   },
+    /**
+     * 根据id获取排行榜
+     * @returns {String} id为周榜id，月榜id，总榜id
+     */
+    getRankList (id) {
+        return instance.get(`/top?topType=${id}`)
+    },
   // ------------------------
   /**
      * 获取所有的排行榜类型
@@ -62,13 +69,7 @@ export default {
     return Vue.http.get('/ranking/gender')
   },
 
-  /**
-     * 根据id获取排行榜
-     * @returns {String} id为周榜id，月榜id，总榜id
-     */
-  getRankList (id) {
-    return Vue.http.get(`/ranking/${id}`)
-  },
+
 
   /**
      * 获取细分的类别

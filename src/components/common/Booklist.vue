@@ -66,7 +66,7 @@ li:focus {
 	box-sizing: border-box;
 	width: 100%;
 	height: 5rem;
-	padding-left: 5rem;
+	/*padding-left: 5rem;*/
 	padding-top: 0.2rem;
 	padding-bottom: 0.2rem;
 }

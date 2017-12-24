@@ -1,61 +1,86 @@
 <template>
 	<div>
 		<div>
-			<p>男生</p>
+			<!--<p>男生</p>-->
 			<ul class="rank-type">
-				<li v-for="item in ranklist.male" v-if="!item.collapse" :key="item._id">
-					<RankItem :rankInfo="item"></RankItem>
-				</li>
-				<v-touch tag="li" class="other-rank" @tap="showMoreMaleRank">
+				<!--<li v-for="item in ranklist.male" v-if="!item.collapse" :key="item._id">-->
+					<!--<RankItem :rankInfo="item"></RankItem>-->
+				<!--</li>-->
+				<v-touch tag="li" class="other-rank" @tap="getRanklist(0)">
 					<div class="rank-item">
-						<img src="../../assets/rank_other.svg"> 别人家的排行榜
+						<img src="../../assets/rank_other.svg"> 人气榜
 					</div>
 					<span class="angle">
-						<img src="../../assets/up.svg" v-if="maleOtherRankIsShow">
+						<img src="../../assets/up.svg" v-if="ranklinstIsShow['0']">
 						<img src="../../assets/down.svg" v-else>
 					</span>
 				</v-touch>
-				<ul v-show="maleOtherRankIsShow" class="rank-type">
-					<li v-for="item in ranklist.male" v-if="item.collapse" :key="item._id">
-						<RankItem :rankInfo="item"></RankItem>
-					</li>
-					</li>
+				<ul v-show="ranklinstIsShow['0']">
+                    <Booklist v-for="book in ranklist['0']" :book="book" :key="book.link"></Booklist>
 				</ul>
-			</ul>
-			<p>女生</p>
-			<ul class="rank-type">
-				<li v-for="item in ranklist.female" v-if="!item.collapse" :key="item._id">
-					<RankItem :rankInfo="item"></RankItem>
-				</li>
-				<v-touch tag="li" class="other-rank" @tap="showMoreFemaleRank">
-					<div class="rank-item">
-						<img src="../../assets/rank_other.svg"> 别人家的排行榜
-					</div>
-					<span class="angle">
-						<img src="../../assets/up.svg" v-if="femaleOtherRankIsShow">
+                <v-touch tag="li" class="other-rank" @tap="getRanklist(2)">
+                    <div class="rank-item">
+                        <img src="../../assets/rank_other.svg"> 收藏榜
+                    </div>
+                    <span class="angle">
+						<img src="../../assets/up.svg" v-if="ranklinstIsShow['2']">
 						<img src="../../assets/down.svg" v-else>
 					</span>
-				</v-touch>
-				<ul v-show="femaleOtherRankIsShow" class="rank-type">
-					<li v-for="item in ranklist.female" v-if="item.collapse" :key="item._id">
-						<RankItem :rankInfo="item"></RankItem>
-					</li>
-				</ul>
+                </v-touch>
+                <ul v-show="ranklinstIsShow['2']">
+                    <Booklist v-for="book in ranklist['2']" :book="book" :key="book.link"></Booklist>
+                </ul>
+                <v-touch tag="li" class="other-rank" @tap="getRanklist(4)">
+                    <div class="rank-item">
+                        <img src="../../assets/rank_other.svg"> 推荐榜
+                    </div>
+                    <span class="angle">
+						<img src="../../assets/up.svg" v-if="ranklinstIsShow['4']">
+						<img src="../../assets/down.svg" v-else>
+					</span>
+                </v-touch>
+                <ul v-show="ranklinstIsShow['4']">
+                    <Booklist v-for="book in ranklist['4']" :book="book" :key="book.link"></Booklist>
+                </ul>
 			</ul>
+			<!--<p>女生</p>-->
+			<!--<ul class="rank-type">-->
+				<!--<li v-for="item in ranklist.female" v-if="!item.collapse" :key="item._id">-->
+					<!--<RankItem :rankInfo="item"></RankItem>-->
+				<!--</li>-->
+				<!--<v-touch tag="li" class="other-rank" @tap="showMoreFemaleRank">-->
+					<!--<div class="rank-item">-->
+						<!--<img src="../../assets/rank_other.svg"> 别人家的排行榜-->
+					<!--</div>-->
+					<!--<span class="angle">-->
+						<!--<img src="../../assets/up.svg" v-if="femaleOtherRankIsShow">-->
+						<!--<img src="../../assets/down.svg" v-else>-->
+					<!--</span>-->
+				<!--</v-touch>-->
+				<!--<ul v-show="femaleOtherRankIsShow" class="rank-type">-->
+					<!--<li v-for="item in ranklist.female" v-if="item.collapse" :key="item._id">-->
+						<!--<RankItem :rankInfo="item"></RankItem>-->
+					<!--</li>-->
+				<!--</ul>-->
+			<!--</ul>-->
 		</div>
 	</div>
 </template>
 <script>
-import RankItem from './RankItem'
+//import RankItem from './RankItem'
+import Booklist from '@/components/common/Booklist'
 import api from '@/api/api'
+import { Indicator } from 'mint-ui'
 export default {
   name: 'Rank',
   components: {
-    RankItem
+//    RankItem
+      Booklist
   },
   data () {
     return {
-      ranklist: {},
+      ranklist: {0:[],2:[],4:[]},
+      ranklinstIsShow:{0:false,2:false,4:false},
       maleOtherRankIsShow: false,
       femaleOtherRankIsShow: false
     }
@@ -70,6 +95,19 @@ export default {
   methods: {
     showMoreMaleRank () {
       this.maleOtherRankIsShow = !this.maleOtherRankIsShow
+    },
+    getRanklist(id){
+        Indicator.open()
+        this.ranklinstIsShow[id]=!this.ranklinstIsShow[id]
+        api.getRankList(id).then(response => {
+            this.ranklist[id] = response.data
+            // 首次加载前20条数据
+//        this.books = response.data.books.slice(0, 20)
+            Indicator.close()
+        }).catch(error => {
+            Indicator.close()
+            console.log(error)
+        })
     },
     showMoreFemaleRank () {
       this.femaleOtherRankIsShow = !this.femaleOtherRankIsShow
