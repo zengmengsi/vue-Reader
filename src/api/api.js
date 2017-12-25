@@ -28,8 +28,7 @@ export default {
     * @param {String} sourceId 小说源id
     */
   getChapters (sourceId,page) {
-      page=page*100;
-
+          page=page*100-99;
     return instance.get(`/chapter?link=${sourceId}&page=${page}`)
   },
   /**

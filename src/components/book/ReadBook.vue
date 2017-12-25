@@ -278,7 +278,6 @@ export default {
         if (this.chapterDescSort) {
           this.loadedChapters = this.loadedChapters.concat(this.bookChapter.chapters.slice(bookChapterCount - 50 * (this.loadPages + 1), bookChapterCount - 50 * this.loadPages).reverse())
         } else {
-            console.log(12300000000000000000)
           this.loadedChapters = this.loadedChapters.concat(this.bookChapter.chapters.slice(50 * this.loadPages, 50 * (this.loadPages + 1)))
         }
         this.loadPages++
