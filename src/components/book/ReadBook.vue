@@ -97,7 +97,7 @@ export default {
   name: 'ReadBook',
   data () {
     return {
-      bookChapter: {},
+      bookChapter: {chapters:[]},
       bookChaptersContent: '',
       loadedChapters: [], // 缓存滚动加载的章节列表
       loadPages: 1, // 滚动加载的记次
@@ -123,20 +123,7 @@ export default {
     Indicator.open('加载中')
   },
   created () {
-    let readRecord = util.getLocalStroageData('followBookList')
-    api.getChapters(this.$route.params.bookId).then(response => {
-      this.bookChapter.chapters = response.data
-      this.currentChapter = readRecord && readRecord[this.$route.params.bookId] && readRecord[this.$route.params.bookId].chapter ? readRecord[this.$route.params.bookId].chapter : 0
-      // 默认取前50章节
-      this.loadedChapters = this.bookChapter.chapters.slice(0, 50)
-      Indicator.close()
-      this.getBookChapterContent()
-    }).catch(err => {
-      console.log(err)
-      MessageBox.alert('加载失败，请重试').then(() => {
-        this.$router.push('/book/' + this.$route.params.bookId)
-      })
-    })
+      this.getChapterList();
   },
   // mounted () {
   //     debugger
@@ -156,6 +143,28 @@ export default {
     'currentChapter': 'getBookChapterContent'
   },
   methods: {
+    getChapterList(){
+        let readRecord = util.getLocalStroageData('followBookList')
+        api.getChapters(this.$route.params.bookId,this.loadPages).then(response => {
+            Indicator.close()
+            if(response.data.length===0){
+                return;
+            }
+            this.bookChapter.chapters=this.bookChapter.chapters.concat(response.data)
+            this.currentChapter = readRecord && readRecord[this.$route.params.bookId] && readRecord[this.$route.params.bookId].chapter ? readRecord[this.$route.params.bookId].chapter : 0
+            // 默认取前50章节
+            this.loadedChapters = this.loadedChapters.concat(this.bookChapter.chapters.slice(50 * (this.loadPages-1), 50))
+
+            if(this.loadPages===1){
+                this.getBookChapterContent()
+            }
+        }).catch(err => {
+            console.log(err)
+            MessageBox.alert('加载失败，请重试').then(() => {
+                this.$router.push('/book/' + this.$route.params.bookId)
+            })
+        })
+    },
     getBookChapterContent () {
       let lastChapter = this.currentChapter >= this.bookChapter.chapters.length - 1 ? this.bookChapter.chapters.length - 1 : this.currentChapter
       Indicator.open('加载中')
@@ -261,14 +270,19 @@ export default {
     },
     // 滚动加载到底部，显示更多
     onScroll: function (e, position) {
-      let bookChapterCount = this.bookChapter.chapters.length
+        console.log(this.loadPages)
+
+        let bookChapterCount = this.bookChapter.chapters.length
+//        console.log(position.scrollTop)
       if (position.scrollTop > 1300 * this.loadPages) {
         if (this.chapterDescSort) {
           this.loadedChapters = this.loadedChapters.concat(this.bookChapter.chapters.slice(bookChapterCount - 50 * (this.loadPages + 1), bookChapterCount - 50 * this.loadPages).reverse())
         } else {
+            console.log(12300000000000000000)
           this.loadedChapters = this.loadedChapters.concat(this.bookChapter.chapters.slice(50 * this.loadPages, 50 * (this.loadPages + 1)))
         }
         this.loadPages++
+          this.getChapterList();
       }
     },
     /***

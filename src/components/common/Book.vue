@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <mt-header fixed :title="book && book.title">
+    <div v-title :data-title="book.name">
+        <mt-header fixed>
             <div slot="left" @click="$router.go(backStep)">
                 <mt-button icon="back">返回</mt-button>
             </div>
@@ -155,7 +155,7 @@
                     // 以bookId为键值，方便后续删除等操作
                     localShelf[this.book.link] = {
                         cover: this.book.cover,
-                        title: this.book.name,
+                        name: this.book.name,
                         author: this.book.author,
                         bookid: this.$route.params.bookId
                     }

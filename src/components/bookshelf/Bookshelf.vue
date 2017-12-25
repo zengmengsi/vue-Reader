@@ -1,6 +1,5 @@
 <template>
 	<div>
-
         <div class="no-content" v-if="!books.length">
             <i class="iconfont">&#xe6a6;</i>
             <mt-button type="primary" class="add-book" v-if="!books.length" @click="$emit('addBook','分类')">添加小说</mt-button>
@@ -8,7 +7,7 @@
         <ul class="category" v-if="books.length">
             <li v-for="item in books">
                 <img :src="item.cover" @click="getBook(item.bookid)">
-                <p>{{item.title}}</p>
+                <p>{{item.name}}</p>
                 <div>{{item.author}}</div>
             </li>
         </ul>

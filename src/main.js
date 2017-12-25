@@ -40,3 +40,9 @@ document.addEventListener('contextmenu', (event) => {
   event.preventDefault()
   event.stopPropagation()
 })
+
+Vue.directive('title', {
+    inserted: function (el, binding) {
+        document.title = el.dataset.title
+    }
+})

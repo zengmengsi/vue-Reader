@@ -18,6 +18,18 @@
 				<ul v-show="ranklinstIsShow['0']">
                     <Booklist v-for="book in ranklist['0']" :book="book" :key="book.link"></Booklist>
 				</ul>
+                <v-touch tag="li" class="other-rank" @tap="getRanklist(1)">
+                    <div class="rank-item">
+                        <img src="../../assets/rank_other.svg"> 人气榜（完结）
+                    </div>
+                    <span class="angle">
+						<img src="../../assets/up.svg" v-if="ranklinstIsShow['1']">
+						<img src="../../assets/down.svg" v-else>
+					</span>
+                </v-touch>
+                <ul v-show="ranklinstIsShow['1']">
+                    <Booklist v-for="book in ranklist['1']" :book="book" :key="book.link"></Booklist>
+                </ul>
                 <v-touch tag="li" class="other-rank" @tap="getRanklist(2)">
                     <div class="rank-item">
                         <img src="../../assets/rank_other.svg"> 收藏榜
@@ -30,6 +42,18 @@
                 <ul v-show="ranklinstIsShow['2']">
                     <Booklist v-for="book in ranklist['2']" :book="book" :key="book.link"></Booklist>
                 </ul>
+                <v-touch tag="li" class="other-rank" @tap="getRanklist(3)">
+                    <div class="rank-item">
+                        <img src="../../assets/rank_other.svg"> 收藏榜（完结）
+                    </div>
+                    <span class="angle">
+						<img src="../../assets/up.svg" v-if="ranklinstIsShow['2']">
+						<img src="../../assets/down.svg" v-else>
+					</span>
+                </v-touch>
+                <ul v-show="ranklinstIsShow['3']">
+                    <Booklist v-for="book in ranklist['3']" :book="book" :key="book.link"></Booklist>
+                </ul>
                 <v-touch tag="li" class="other-rank" @tap="getRanklist(4)">
                     <div class="rank-item">
                         <img src="../../assets/rank_other.svg"> 推荐榜
@@ -40,6 +64,18 @@
 					</span>
                 </v-touch>
                 <ul v-show="ranklinstIsShow['4']">
+                    <Booklist v-for="book in ranklist['4']" :book="book" :key="book.link"></Booklist>
+                </ul>
+                <v-touch tag="li" class="other-rank" @tap="getRanklist(5)">
+                    <div class="rank-item">
+                        <img src="../../assets/rank_other.svg"> 推荐榜（完结）
+                    </div>
+                    <span class="angle">
+						<img src="../../assets/up.svg" v-if="ranklinstIsShow['5']">
+						<img src="../../assets/down.svg" v-else>
+					</span>
+                </v-touch>
+                <ul v-show="ranklinstIsShow['5']">
                     <Booklist v-for="book in ranklist['4']" :book="book" :key="book.link"></Booklist>
                 </ul>
 			</ul>
@@ -79,8 +115,8 @@ export default {
   },
   data () {
     return {
-      ranklist: {0:[],2:[],4:[]},
-      ranklinstIsShow:{0:false,2:false,4:false},
+      ranklist: {0:[],2:[],4:[],1:[],3:[],5:[]},
+      ranklinstIsShow:{0:false,2:false,4:false,1:false,3:false,5:false},
       maleOtherRankIsShow: false,
       femaleOtherRankIsShow: false
     }
@@ -97,8 +133,11 @@ export default {
       this.maleOtherRankIsShow = !this.maleOtherRankIsShow
     },
     getRanklist(id){
-        Indicator.open()
         this.ranklinstIsShow[id]=!this.ranklinstIsShow[id]
+        if(this.ranklist[id].length>0){
+            return;
+        }
+        Indicator.open()
         api.getRankList(id).then(response => {
             this.ranklist[id] = response.data
             // 首次加载前20条数据

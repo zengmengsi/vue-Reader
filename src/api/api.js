@@ -27,13 +27,14 @@ export default {
     * 获取小说章节
     * @param {String} sourceId 小说源id
     */
-  getChapters (sourceId) {
-    return instance.get(`/chapter?link=${sourceId}&page=1`)
+  getChapters (sourceId,page) {
+      page=page*100;
+
+    return instance.get(`/chapter?link=${sourceId}&page=${page}`)
   },
   /**
      * 获取小说章节内容
      * @param {String} chapterUrl 章节url
-     * http://chapterup.zhuishushenqi.com/chapter/http://vip.zhuishushenqi.com/chapter/5817f1161bb2ca566b0a5973?cv=1481275033588
      */
   getBookChapterContent (link) {
     return instance.get(`/content?link=${link}`)
