@@ -62,7 +62,7 @@ export default {
   },
   data () {
     return {
-      selected: '书架'
+      selected: '分类'
     }
   },
   methods: {

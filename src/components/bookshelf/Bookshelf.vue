@@ -224,6 +224,12 @@ export default {
     .category{
         margin-top: 20px;
     }
+.category p{
+    font-size: 0.8rem;
+}
+    .category div{
+        font-size: 0.6rem;
+    }
 .category li{
     width: 28%;
     margin-left: 4%;

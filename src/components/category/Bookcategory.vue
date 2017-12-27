@@ -28,6 +28,15 @@
                    <div>{{JSON.parse(item).author}}</div>
                </li>
            </ul>
+            <p class="category-type"><span>不容错过</span></p>
+            <ul class="category">
+                <li v-for="item in dontmisslist">
+                    <img :src="JSON.parse(item).img" @click="getBook(JSON.parse(item).link)">
+                    <p>{{JSON.parse(item).name}}</p>
+                    <div>{{JSON.parse(item).type}}</div>
+                    <div>{{JSON.parse(item).author}}</div>
+                </li>
+            </ul>
         </section>
 		<!--<section v-for="(item ,key, index) in category" :key="index">-->
 			<!--<p class="category-type">{{categoryType[key]}}</p>-->
@@ -48,6 +57,7 @@ export default {
   data () {
     return {
       tuijianlist: null,
+      dontmisslist:null,
       mins: ['玄幻魔法', '武侠修真', '纯爱耽美', '都市言情', '职场校园', '穿越重生', '历史军事', '网游动漫', '恐怖灵异', '科幻小说', '美文名著'],
       minorSelected: null,
       typeList:[]
@@ -77,6 +87,12 @@ export default {
     }).catch(err => {
       console.log(err)
     })
+      api.getListByType(2).then(response => {
+          that.dontmisslist = response.data
+          that.loading = false
+      }).catch(err => {
+          console.log(err)
+      })
   }
 }
 </script>
@@ -142,7 +158,7 @@ export default {
     line-height: 2rem;
     padding-left: 0.6rem;
     padding-right: 0.6rem;
-    font-size: 0.7rem;
+    font-size: 0.9rem;
 }
 .active {
     color: red;
@@ -166,15 +182,15 @@ section{
     /*color:#241818;*/
 }
 .category li p{
-    font-size: 0.7rem;
-    margin: 0.2rem 0;
+    font-size: 0.8rem;
+    margin: 0.1rem 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 .category li div{
     margin:0.1rem 0;
-    font-size:0.4rem;
+    font-size:0.6rem;
     color:#999;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -195,7 +211,7 @@ section{
     font-size: 0.8rem;
 }
 .category2 .author{
-    font-size:0.7rem;
+    font-size:0.6rem;
     color:#999;
     line-height: 20px;
     white-space: nowrap;
