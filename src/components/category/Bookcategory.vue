@@ -161,8 +161,8 @@ section{
 }
 .category li img{
     box-shadow:2px 2px 3px #eee;
-    width:100%;
-    height:110px;
+    width: 4rem;
+    height:5rem;
     /*color:#241818;*/
 }
 .category li p{
@@ -188,7 +188,8 @@ section{
 }
 .category2 img{
     float:left;
-    width:46%;
+    width: 4rem;
+    /*width:46%;*/
 }
 .category2 p{
     margin: 2px 0;

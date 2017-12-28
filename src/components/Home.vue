@@ -28,17 +28,14 @@
                 书架
 			</mt-tab-item>
 			<mt-tab-item id="分类">
-				<!--<img slot="icon" src="../assets/category.svg">-->
                 <i slot="icon" class="iconfont">&#xe604;</i>
                 分类
 			</mt-tab-item>
 			<mt-tab-item id="排行">
-				<!--<img slot="icon" src="../assets/rank.svg">-->
                 <i slot="icon" class="iconfont">&#xe60b;</i>
                 排行
 			</mt-tab-item>
 			<mt-tab-item id="搜索">
-				<!--<img slot="icon" src="../assets/search.svg">-->
                 <i slot="icon" class="iconfont">&#xe60d;</i>
                 搜索
 			</mt-tab-item>
@@ -62,7 +59,7 @@ export default {
   },
   data () {
     return {
-      selected: '书架'
+      selected:'书架'
     }
   },
   methods: {
