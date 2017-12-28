@@ -10,7 +10,7 @@ const state = {
   monthRankId: '',
   totalRankId: '',
   headTitle: '', // 头部文字
-  previousPosition: '书架',
+  previousPosition: '分类',
   source: '', // 小说源
   backPath: {},
   bookInfo: {}
