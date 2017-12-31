@@ -177,8 +177,8 @@ section{
 }
 .category li img{
     box-shadow:2px 2px 3px #eee;
-    width: 5rem;
-    height:4rem;
+    width: 4rem;
+    height:5rem;
     /*color:#241818;*/
 }
 .category li p{

@@ -235,7 +235,7 @@ export default {
     margin-left: 4%;
 }
 .category li img{
-    height: 140px;
+    /*height: 140px;*/
     box-shadow: 3px 3px 4px #eee;
 }
 </style>
